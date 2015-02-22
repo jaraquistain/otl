@@ -1,1 +1,4 @@
 .idea/workspace.xml
+dictionaries
+.idea/*
+.DS_Store
