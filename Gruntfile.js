@@ -2,12 +2,6 @@
 module.exports = function (grunt) {
     grunt.initConfig({
         pkg:        grunt.file.readJSON('package.json'),
-        watch:      {
-            react: {
-                files: 'react/**/*.jsx',
-                tasks: ['browserify']
-            }
-        },
         browserify: {
             main: {
                 options: {
@@ -27,7 +21,7 @@ module.exports = function (grunt) {
                     ]
                 },
                 files: {
-                    'public/min/scripts.js': 'app/router/routerSetup.js'
+                    'public/min/scripts.js': './app.js'
                 }
             }
         }
@@ -47,5 +41,5 @@ module.exports = function (grunt) {
 
     plugins.forEach(grunt.loadNpmTasks);
 
-    grunt.registerTask('default', ['browserify', 'watch']);
+    grunt.registerTask('default', ['browserify']);
 };

@@ -29,10 +29,7 @@ RendererServer.prototype.handleErr = function(err) {
     this.next(err);
 };
 
-/**
- * Helper functions.
- */
-
+//Helper function to wrap whatever the route wants to render in the base HTML
 function wrapWithBase(locals, callback) {
     try {
         var layout = require(RendererServer.viewsDir + '/base');

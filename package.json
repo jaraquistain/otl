@@ -26,7 +26,6 @@
     "morgan": "~1.5.1",
     "node-jsx": "^0.12.4",
     "react": "^0.12.2",
-    "reactify": "^1.0.0",
     "serve-favicon": "~2.2.0"
   },
   "devDependencies": {
@@ -40,5 +39,8 @@
     "grunt-nodemon": "^0.4.0",
     "grunt-react": "^0.10.0",
     "reactify": "^1.0.0"
+  },
+  "browser": {
+    "./app/renderer/index.js": "./app/renderer/client.js"
   }
 }

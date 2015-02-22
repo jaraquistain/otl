@@ -1,15 +1,15 @@
 'use strict';
 var isServer = !process.browser;
 
-
-
 module.exports = function() {
     return {
-        '/': function () {
-            this.res.send('success at root');
+        '/': function (callback) {
+            console.log('callback for \'/\'');
+            callback(null, 'Index');
         },
-        '/:id': function (id) {
-            this.res.send('success for id: ' + id);
+        '/:id': function (id, callback) {
+            console.log('callback for \'' + id + '\'');
+            callback(null, 'Other', {'id': id});
         }
     };
 };
