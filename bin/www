@@ -7,6 +7,12 @@ var app = require('../app');
 var debug = require('debug')('otl:server');
 var http = require('http');
 
+// Allow directly requiring '.jsx' files.
+require('node-jsx').install({extension: '.jsx'});
+
+//TODO: have env set dynamically eventually instead of hard coded.
+app.set('env', 'development');
+
 /**
  * Get port from environment and store in Express.
  */
@@ -82,5 +88,6 @@ function onListening() {
     'use strict';
     var addr = server.address();
     var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
+    console.log('listening on: ' + bind);
     debug('Listening on ' + bind);
 }

@@ -1,5 +1,4 @@
-/*jshint strict:false */
-
+'use strict';
 module.exports = function (grunt) {
     grunt.initConfig({
         pkg:        grunt.file.readJSON('package.json'),
@@ -10,12 +9,26 @@ module.exports = function (grunt) {
             }
         },
         browserify: {
-            options: {
-                transform: [require('grunt-react').browserify]
-            },
-            client:  {
-                src:  ['react/**/*.jsx'],
-                dest: 'public/scripts/react/bundle.js'
+            main: {
+                options: {
+                    debug: true,
+                    transform: ['reactify'],
+                    aliasMappings: [
+                        {
+                            cwd: 'app/views',
+                            src: ['**/*.jsx'],
+                            dest: 'app/views',
+                            rename: function(cwd, src) {
+                                // Little hack to ensure that file extension is preserved.
+                                var ext = src.split('.').pop();
+                                return cwd + '/' + src + '.' + ext;
+                            }
+                        }
+                    ]
+                },
+                files: {
+                    'public/min/scripts.js': 'app/router/routerSetup.js'
+                }
             }
         }
     });

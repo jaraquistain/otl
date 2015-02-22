@@ -24,7 +24,9 @@
     "hbs": "^2.8.0",
     "hbsfy": "^2.2.1",
     "morgan": "~1.5.1",
+    "node-jsx": "^0.12.4",
     "react": "^0.12.2",
+    "reactify": "^1.0.0",
     "serve-favicon": "~2.2.0"
   },
   "devDependencies": {
@@ -36,6 +38,7 @@
     "grunt-contrib-uglify": "^0.8.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-nodemon": "^0.4.0",
-    "grunt-react": "^0.10.0"
+    "grunt-react": "^0.10.0",
+    "reactify": "^1.0.0"
   }
 }
