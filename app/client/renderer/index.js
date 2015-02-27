@@ -8,7 +8,7 @@ module.exports = RendererClient;
 
 function RendererClient() {}
 
-RendererClient.viewsDir = 'app/views';
+RendererClient.viewsDir = 'app/common/views';
 
 RendererClient.prototype.render = function (component) {
     console.log('render client called');

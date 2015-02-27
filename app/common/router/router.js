@@ -3,7 +3,7 @@ var director = require('director');
 var React = require('react');
 var isServer = !process.browser;
 var DirectorRouter = isServer ? director.http.Router : director.Router;
-var Renderer = require('../renderer');
+var Renderer = require('../../' + (isServer ? 'server/' : 'client/') + 'renderer');
 
 module.exports = Router;
 

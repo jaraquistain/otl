@@ -8,7 +8,7 @@ module.exports = RendererServer;
 
 function RendererServer() {}
 
-RendererServer.viewsDir = process.cwd() + '/app/views';
+RendererServer.viewsDir = process.cwd() + '/app/common/views';
 
 RendererServer.prototype.render = function(component, req, res) {
     var html = React.renderToString(component);

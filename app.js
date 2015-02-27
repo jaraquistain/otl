@@ -16,8 +16,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //ROUTER
-var router = require('./app/router/routerSetup');
-var routerMiddleware = require('./app/router/middleware');
+var router = require('./app/common/router/routerSetup');
+var routerMiddleware = require('./app/common/router/middleware');
 app.use(routerMiddleware(router));
 
 // catch 404 and forward to error handler
