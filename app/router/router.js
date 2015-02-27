@@ -74,6 +74,7 @@ Router.prototype.getComponent = function(viewPath, data) {
 };
 
 Router.prototype.start = function () {
+    console.log('starting client router');
     this.directorRouter.configure({
         html5history: true
     });

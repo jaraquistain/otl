@@ -5,7 +5,7 @@ var Index = React.createClass({
     render: function () {
         return (
             <div>
-                <h1>Home</h1>
+                <h1>Too many cooks!</h1>
                 <p>View
                     <a href="/posts">/posts</a>
                     .</p>
