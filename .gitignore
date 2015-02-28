@@ -1,4 +1,4 @@
-.idea/workspace.xml
-dictionaries
 .idea/*
+**/node_modules/*
+!**/node_modules/app
 .DS_Store
