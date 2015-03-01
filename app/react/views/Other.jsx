@@ -1,6 +1,6 @@
 'use strict';
 var React = require('react');
-var Renderer = require('./../components/Renderer.jsx');
+var Renderer = require('../components/Renderer');
 
 var Other = React.createClass({
     render: function () {

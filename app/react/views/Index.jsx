@@ -1,5 +1,5 @@
 var React = require('react');
-var Renderer = require('./../components/Renderer.jsx');
+var Renderer = require('../components/Renderer');
 
 var Index = React.createClass({
     render: function () {

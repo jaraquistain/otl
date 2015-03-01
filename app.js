@@ -16,7 +16,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //ROUTER
-var router = require('./app/node_modules/router/node_modules/index');
+var router = require('./app/node_modules/router');
 var routerMiddleware = require('./app/node_modules/router/node_modules/middleware');
 app.use(routerMiddleware(router));
 

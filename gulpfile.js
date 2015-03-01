@@ -1,49 +1,54 @@
 var gulp = require('gulp');
 var browserify = require('browserify');
-var vinylTransform = require('vinyl-transform');
 var uglify = require('gulp-uglify');
-var reactify = require('reactify');
 var concat = require('gulp-concat');
-var sourceMaps = require('gulp-sourcemaps');
 var rename = require('gulp-rename');
 var through2 = require('through2');
+var react = require('gulp-react');
+var reactify = require('reactify');
 
-gulp.task('browserify', function () {
-    var browserified = vinylTransform(function (filename) {
-        console.log('browserifying:', filename);
-        var b = browserify(filename, {
-            debug: true,
-            transform: [reactify]
-        });
-        return b.bundle();
-    });
+var paths = {
+    'jsx': {
+        'in':  './app/react/**/*.jsx',
+        'out': './app/react/'
+    },
+    'app':  {
+        'in':  ['./app/**/*.js', './app/react/**/*.jsx'],
+        'out': './public/js'
+    },
+    'js': {
+        'in': './public/js/**/*.js',
+        'out': './public/dist'
+    }
+};
 
-    //return gulp.src(['./app/client/**/*.js', './app/common/**/*.js'])
-    //    .pipe(browserified)
-    //    .pipe(uglify())
-    //    .pipe(gulp.dest('./public/js'));
+gulp.task('jsx->js', function () {
+    gulp.src(paths.jsx.in)
+        .pipe(react())
+        .pipe(gulp.dest(paths.jsx.out));
+});
 
-    return gulp.src(['./app/client/**/*.js', './app/common/**/*.js', './app/**/*.jsx'])
-        .pipe(through2.obj(function (file, enc, next){
+gulp.task('browserify', [], function () {
+    return gulp.src(paths.app.in)
+        .pipe(through2.obj(function (file, enc, next) {
+            console.log('browserify:', file.path);
             browserify(file.path)
-                .transform('reactify')
-                .bundle(function(err, res){
+                .transform(reactify)
+                .bundle(function (err, res) {
                     file.contents = res;
                     next(null, file);
                 });
         }))
-        .pipe(gulp.dest('./public/js'));
+        .pipe(gulp.dest(paths.app.out));
 });
 
 gulp.task('scripts', ['browserify'], function () {
-    return gulp.src(['./public/js/**/*.js'])
-        .pipe(sourceMaps.init())
+    return gulp.src(paths.js.in)
         .pipe(concat('scripts.js'))
-        .pipe(sourceMaps.write())
-        .pipe(gulp.dest('./public/dist'))
+        .pipe(gulp.dest(paths.js.out))
         .pipe(rename('scripts.min.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('./public/dist'));
+        .pipe(gulp.dest(paths.js.out));
 });
 
 gulp.task('default', ['scripts']);

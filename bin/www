@@ -1,8 +1,6 @@
 #!/usr/bin/env node
+'use strict';
 
-/**
- * Module dependencies.
- */
 var app = require('../app');
 var debug = require('debug')('otl:server');
 var http = require('http');
@@ -13,52 +11,35 @@ require('node-jsx').install({extension: '.jsx'});
 //TODO: have env set dynamically eventually instead of hard coded.
 app.set('env', 'development');
 
-/**
- * Get port from environment and store in Express.
- */
+//Configure port
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-/**
- * Create HTTP server.
- */
+//Create HTTP server.
 var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
 /**
- * Normalize a port into a number, string, or false.
+ * Normalizes port to either a number or a named pipe
+ * @param val the port value to be normalized
+ * @returns {*}
  */
-
 function normalizePort(val) {
-    'use strict';
     var port = parseInt(val, 10);
 
-    if (isNaN(port)) {
-        // named pipe
-        return val;
-    }
-
-    if (port >= 0) {
-        // port number
-        return port;
-    }
+    if (isNaN(port)) return val;
+    if (port >= 0) return port;
 
     return false;
 }
 
 /**
  * Event listener for HTTP server "error" event.
+ * @param error the error to be thrown
  */
-
 function onError(error) {
-    'use strict';
     if (error.syscall !== 'listen') {
         throw error;
     }
@@ -85,7 +66,6 @@ function onError(error) {
  */
 
 function onListening() {
-    'use strict';
     var addr = server.address();
     var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
     console.log('listening on: ' + bind);
