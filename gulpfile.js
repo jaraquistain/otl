@@ -5,7 +5,6 @@ var concat = require('gulp-concat');
 var rename = require('gulp-rename');
 var through2 = require('through2');
 var react = require('gulp-react');
-var reactify = require('reactify');
 
 var paths = {
     'jsx': {
@@ -13,7 +12,7 @@ var paths = {
         'out': './app/react/'
     },
     'app':  {
-        'in':  ['./app/**/*.js', './app/react/**/*.jsx'],
+        'in':  ['./app/**/*.js'],
         'out': './public/js'
     },
     'js': {
@@ -28,12 +27,11 @@ gulp.task('jsx->js', function () {
         .pipe(gulp.dest(paths.jsx.out));
 });
 
-gulp.task('browserify', [], function () {
+gulp.task('browserify', ['jsx->js'], function () {
     return gulp.src(paths.app.in)
         .pipe(through2.obj(function (file, enc, next) {
             console.log('browserify:', file.path);
             browserify(file.path)
-                .transform(reactify)
                 .bundle(function (err, res) {
                     file.contents = res;
                     next(null, file);

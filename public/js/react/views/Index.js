@@ -13,7 +13,7 @@ var Renderer = React.createClass({displayName: "Renderer",
 module.exports = Renderer;
 },{"react":149}],2:[function(require,module,exports){
 var React = require('react');
-var Renderer = require('../components/Renderer');
+var Renderer = require('../components/Renderer.js');
 
 var Index = React.createClass({displayName: "Index",
     render: function () {
@@ -31,7 +31,7 @@ var Index = React.createClass({displayName: "Index",
 
 module.exports = Index;
 
-},{"../components/Renderer":1,"react":149}],3:[function(require,module,exports){
+},{"../components/Renderer.js":1,"react":149}],3:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
