@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+
+var app = require('app');
+var http = require('http');
+var normalizePort = require('server/normalizePort');
+var errorHandler = require('server/errorHandler');
+
+//Configure port
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+//Create HTTP server and start listening.
+var server = http.createServer(app);
+server.listen(port);
+server.on('error', errorHandler.onError);
+server.on('listening', errorHandler.onListening);
