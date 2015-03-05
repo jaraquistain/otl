@@ -12,5 +12,5 @@ app.set('port', port);
 //Create HTTP server and start listening.
 var server = http.createServer(app);
 server.listen(port);
-server.on('error', errorHandler.onError);
-server.on('listening', errorHandler.onListening);
+server.on('error', errorHandler.onError(server, port));
+server.on('listening', errorHandler.onListening(server));

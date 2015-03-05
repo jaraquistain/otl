@@ -1,26 +1,23 @@
 var express = require('express');
-var path = require('path');
 var logger = require('morgan');
 var favicon = require('serve-favicon');
 var errorHandler = require('app/errorHandler');
+var dispatch = require('app/router/dispatch.js');
+var router = require('app/router');
+
 
 var app = express();
 
-console.log('env:', app.get('env'));
 app.use(logger('dev'));
+app.use(favicon('www/favicon.ico'));
+app.use(express.static('www'));
 
-app.use(favicon(__dirname + '/www/favicon.ico'));
 
-app.use(express.static(path.join(__dirname, 'www')));
-
+app.use(dispatch(router));
 
 // Set 404
-app.use(errorHandlor.notFound);
-// Catch errors
+app.use(errorHandler.notFound);
 app.use(errorHandler.handleRuntimeError(app.get('env')));
 
-module.exports = app;
 
-//TODO: might need these eventually
-//var cookieParser = require('cookie-parser');
-//app.use(cookieParser());
+module.exports = app;
