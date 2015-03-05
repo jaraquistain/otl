@@ -45,6 +45,7 @@ var Other = React.createClass({displayName: "Other",
         return (
             React.createElement("div", null, 
                 React.createElement("h1", null, "Other: ", this.props.id), 
+                React.createElement("a", {href: "{this.props.random}"}, "/", this.props.random), 
                 React.createElement(Renderer, {renderer: this.props.renderer})
             )
         );
@@ -57,20 +58,26 @@ var settings = require('app/settings');
 var React = require('react');
 module.exports = RendererClient;
 
+window.React = React;
+
 function RendererClient() {}
 
 RendererClient.prototype.render = function render(reactView, data) {
-    return 'hello client';//React.renderToString(reactView, data);
+    return React.createFactory(reactView)(data);
 };
 
-RendererClient.prototype.setView = function setView(viewHtml) {
-    var container = document.getElementById(settings.constants.VIEW_CONTAINER_ID);
-    container.innerHTML = viewHtml;
+RendererClient.prototype.setView = function setView(viewComponent) {
+    React.render(viewComponent, document.getElementById(settings.constants.VIEW_CONTAINER_ID));
 };
 
 RendererClient.prototype.handleErr = function handleErr(err) {
-    console.error('could not rendier view on client');
+    console.error('could not render view on client');
     console.error(err.message + err.stack);
+};
+
+RendererClient.prototype.handleErr = function(err) {
+    console.error(err.message + err.stack);
+    alert(err);
 };
 
 },{"app/settings":11,"react":158}],8:[function(require,module,exports){
@@ -132,6 +139,7 @@ Router.prototype.generateHandler = function (handler) {
 
                 data = data || {};
                 data.router = router;
+                data.renderer = isServer ? 'server' : 'client';
 
                 var viewHtml = router.renderer.render(reactView, data);
                 router.renderer.setView(viewHtml, routeContext.req, routeContext.res);
@@ -173,18 +181,24 @@ Router.prototype.setRoute = function (route) {
 }).call(this,require('_process'))
 },{"_process":159,"app/renderer":7,"director":12}],10:[function(require,module,exports){
 var React = require('react');
-
+//var JSX = require('node-jsx').install();
 module.exports = {
     '/': function (renderAndSend) {
-        var view = React.createFactory(require('app/react/views/index.js'));
-        renderAndSend(null, view);
+        renderAndSend(null,
+            require('app/react/views/index')
+        );
     },
     '/:id': function (id, renderAndSend) {
-        var view = React.createFactory(require('app/react/views/other.js'));
-        renderAndSend(null, view, {'id': id});
+        renderAndSend(null,
+            require('app/react/views/other'),
+            {
+                'id': id,
+                'random': Math.ceil(Math.random() * 10000000)
+            }
+        );
     }
 };
-},{"app/react/views/index.js":5,"app/react/views/other.js":6,"react":158}],11:[function(require,module,exports){
+},{"app/react/views/index":5,"app/react/views/other":6,"react":158}],11:[function(require,module,exports){
 exports.constants = {
     'VIEW_CONTAINER_ID': 'view-content'
 };

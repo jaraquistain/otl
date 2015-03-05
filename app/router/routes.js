@@ -1,12 +1,18 @@
 var React = require('react');
-
+//require('node-jsx').install();
 module.exports = {
     '/': function (renderAndSend) {
-        var view = React.createFactory(require('app/react/views/index.js'));
-        renderAndSend(null, view);
+        renderAndSend(null,
+            require('app/react/views/index')
+        );
     },
     '/:id': function (id, renderAndSend) {
-        var view = React.createFactory(require('app/react/views/other.js'));
-        renderAndSend(null, view, {'id': id});
+        renderAndSend(null,
+            require('app/react/views/other'),
+            {
+                'id': id,
+                'random': Math.ceil(Math.random() * 10000000)
+            }
+        );
     }
 };

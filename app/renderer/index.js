@@ -11,7 +11,7 @@ RendererServer.prototype.render = function render(reactView, data) {
     data.containerId = settings.constants.VIEW_CONTAINER_ID;
     data.scriptUrl = 'js/scripts.js';
     data.title = "Booyaaa";
-    data.viewContent = 'hello server';//React.renderToString(reactView, data);
+    data.viewContent = React.renderToString(React.createFactory(reactView)(data));
 
     return wrapWithBase(data, function(err){
         return err.message;

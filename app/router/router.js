@@ -49,6 +49,7 @@ Router.prototype.generateHandler = function (handler) {
 
                 data = data || {};
                 data.router = router;
+                data.renderer = isServer ? 'server' : 'client';
 
                 var viewHtml = router.renderer.render(reactView, data);
                 router.renderer.setView(viewHtml, routeContext.req, routeContext.res);
