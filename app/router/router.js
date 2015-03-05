@@ -44,13 +44,13 @@ Router.prototype.generateHandler = function (handler) {
             };
 
         function renderAndSend() {
-            handler.apply(handlerContext, params.concat(function (err, viewPath, data) {
+            handler.apply(handlerContext, params.concat(function (err, reactView, data) {
                 if (err) {return handleErr(err);}
 
                 data = data || {};
                 data.router = router;
 
-                var viewHtml = router.renderer.render(viewPath, data);
+                var viewHtml = router.renderer.render(reactView, data);
                 router.renderer.setView(viewHtml, routeContext.req, routeContext.res);
             }));
         }

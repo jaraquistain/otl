@@ -1,8 +1,12 @@
+var React = require('react');
+
 module.exports = {
     '/': function (renderAndSend) {
-        renderAndSend(null, 'Index');
+        var view = React.createFactory(require('app/react/views/index.js'));
+        renderAndSend(null, view);
     },
     '/:id': function (id, renderAndSend) {
-        renderAndSend(null, 'Other', {'id': id});
+        var view = React.createFactory(require('app/react/views/other.js'));
+        renderAndSend(null, view, {'id': id});
     }
 };

@@ -1,11 +1,11 @@
 var settings = require('app/settings');
+var React = require('react');
 module.exports = RendererClient;
 
 function RendererClient() {}
 
-RendererClient.prototype.render = function render(viewPath, data) {
-    var randomPath = Math.ceil(Math.random() * 100000);
-    return '<a href="/' + randomPath + '">' + randomPath + ' from client</a><p>Data:</p><p>' + JSON.stringify(data) + '</p>';
+RendererClient.prototype.render = function render(reactView, data) {
+    return 'hello client';//React.renderToString(reactView, data);
 };
 
 RendererClient.prototype.setView = function setView(viewHtml) {
