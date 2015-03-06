@@ -8,7 +8,7 @@ var React = require('react');
 
 var Renderer = React.createClass({displayName: "Renderer",
     render: function () {
-        return React.createElement("h2", {className: "debug"}, 
+        return React.createElement("p", {className: "debug"}, 
             "Rendered on the ", React.createElement("strong", null, this.props.renderer), "."
         );
     }
@@ -201,7 +201,7 @@ module.exports = {
             require('app/react/js/views/other'),
             {
                 'id': id,
-                'random': Math.ceil(Math.random() * 10000000)
+                'random': 'b' + Math.ceil(Math.random() * 10000000)
             }
         );
     }
@@ -209,7 +209,7 @@ module.exports = {
 },{"app/react/js/views/index":"/Users/jaraquistain/Development/otl/node_modules/app/react/js/views/index.js","app/react/js/views/other":"/Users/jaraquistain/Development/otl/node_modules/app/react/js/views/other.js"}],"/Users/jaraquistain/Development/otl/node_modules/app/settings/index.js":[function(require,module,exports){
 exports.constants = {
     'VIEW_CONTAINER_ID': 'view-content',
-    'SCRIPT_URL': 'js/bundle.js'
+    'SCRIPT_URL': 'js/bundle.min.js'
 };
 },{}],"/Users/jaraquistain/Development/otl/node_modules/browserify/node_modules/process/browser.js":[function(require,module,exports){
 // shim for using process in browser

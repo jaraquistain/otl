@@ -7,6 +7,7 @@ var watchify = require('watchify');
 var transform = require('vinyl-transform');
 var watch = require('gulp-watch');
 var server = require('gulp-express');
+var path = require('path');
 
 var paths = {
     'jsx': {
@@ -15,16 +16,30 @@ var paths = {
     },
     'client': {
         'in':  './bin/client',
-        'out': './www/js'
+        'out': './www/js',
+        'filename': 'bundle.js'
     },
     'app': {
         'in': './bin/server'
     }
 };
 
-gulp.task('server', ['browserify'], function () {
+gulp.task('server', ['minify'], function () {
     server.run([paths.app.in]);
     gulp.watch(paths.jsx.in, ['jsx->js']);
+    gulp.watch('./node_modules/app/**/*', function(){
+        server.run([paths.app.in]);
+    });
+});
+
+gulp.task('minify',['minify:bundle']);
+
+gulp.task('minify:bundle', ['browserify'], function(){
+    gulp.src(path.join(paths.client.out, paths.client.filename))
+        .pipe(uglify())
+        .pipe(rename({'suffix': '.min'}))
+        .pipe(gulp.dest(paths.client.out))
+        .pipe(server.notify());
 });
 
 gulp.task('jsx->js', function () {
@@ -47,12 +62,8 @@ gulp.task('browserify', ['jsx->js'], function () {
 
         return gulp.src(paths.client.in)
             .pipe(bundle)
-            .pipe(rename('bundle.js'))
+            .pipe(rename(paths.client.filename))
             .pipe(gulp.dest(paths.client.out))
-            .pipe(uglify())
-            .pipe(rename({'suffix': '.min'}))
-            .pipe(gulp.dest(paths.client.out))
-            .pipe(server.notify());
     }
 
     return bundle();
