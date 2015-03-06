@@ -45,7 +45,7 @@ var Other = React.createClass({displayName: "Other",
         return (
             React.createElement("div", null, 
                 React.createElement("h1", null, "Other: ", this.props.id), 
-                React.createElement("a", {href: "{this.props.random}"}, "/", this.props.random), 
+                React.createElement("a", {href: this.props.random}, "/", this.props.random), 
                 React.createElement(Renderer, {renderer: this.props.renderer})
             )
         );
@@ -156,17 +156,29 @@ Router.prototype.generateHandler = function (handler) {
 };
 
 Router.prototype.initClient = function () {
-    console.log('starting client router');
+    function getAnchorInfo(el) {
+        var info = {};
+        for (el; el && el !== document; el = el.parentNode) {
+            if (el.tagName === 'A') {
+                info.href = el.attributes.href.value;
+                info.passthru = el.dataset.passthru && el.dataset.passthru !== 'false';
+                break;
+            }
+        }
+        return info;
+    }
+
     this.directorRouter.configure({
         html5history: true
     });
 
     //Intercept links and let through only if data-pass-thru="true"
     document.addEventListener('click', function (e) {
-        var el = e.target;
-        var dataset = el && el.dataset;
-        if (el && el.nodeName === 'A' && (!dataset.passThru || dataset.passThru === 'false')) {
-            this.directorRouter.setRoute(el.attributes.href.value);
+        var el = e.target,
+            info = getAnchorInfo(el);
+
+        if (el && info.href && !info.passthru) {
+            this.directorRouter.setRoute(info.href);
             e.preventDefault();
         }
     }.bind(this), false);
@@ -180,8 +192,6 @@ Router.prototype.setRoute = function (route) {
 };
 }).call(this,require('_process'))
 },{"_process":159,"app/renderer":7,"director":12}],10:[function(require,module,exports){
-var React = require('react');
-//var JSX = require('node-jsx').install();
 module.exports = {
     '/': function (renderAndSend) {
         renderAndSend(null,
@@ -198,9 +208,10 @@ module.exports = {
         );
     }
 };
-},{"app/react/views/index":5,"app/react/views/other":6,"react":158}],11:[function(require,module,exports){
+},{"app/react/views/index":5,"app/react/views/other":6}],11:[function(require,module,exports){
 exports.constants = {
-    'VIEW_CONTAINER_ID': 'view-content'
+    'VIEW_CONTAINER_ID': 'view-content',
+    'SCRIPT_URL': 'js/bundle.js'
 };
 },{}],12:[function(require,module,exports){
 

@@ -1,5 +1,3 @@
-var React = require('react');
-//require('node-jsx').install();
 module.exports = {
     '/': function (renderAndSend) {
         renderAndSend(null,

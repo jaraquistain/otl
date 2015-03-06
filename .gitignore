@@ -2,4 +2,6 @@
 node_modules/*
 !node_modules/app
 !node_modules/server
+www/js/dist/*
+app/react/**/*.js
 .DS_Store

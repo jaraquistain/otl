@@ -66,17 +66,29 @@ Router.prototype.generateHandler = function (handler) {
 };
 
 Router.prototype.initClient = function () {
-    console.log('starting client router');
+    function getAnchorInfo(el) {
+        var info = {};
+        for (el; el && el !== document; el = el.parentNode) {
+            if (el.tagName === 'A') {
+                info.href = el.attributes.href.value;
+                info.passthru = el.dataset.passthru && el.dataset.passthru !== 'false';
+                break;
+            }
+        }
+        return info;
+    }
+
     this.directorRouter.configure({
         html5history: true
     });
 
     //Intercept links and let through only if data-pass-thru="true"
     document.addEventListener('click', function (e) {
-        var el = e.target;
-        var dataset = el && el.dataset;
-        if (el && el.nodeName === 'A' && (!dataset.passThru || dataset.passThru === 'false')) {
-            this.directorRouter.setRoute(el.attributes.href.value);
+        var el = e.target,
+            info = getAnchorInfo(el);
+
+        if (el && info.href && !info.passthru) {
+            this.directorRouter.setRoute(info.href);
             e.preventDefault();
         }
     }.bind(this), false);
