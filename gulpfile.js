@@ -24,10 +24,12 @@ var paths = {
     }
 };
 
+gulp.task('default', ['server']);
+
 gulp.task('server', ['minify'], function () {
     server.run([paths.app.in]);
     gulp.watch(paths.jsx.in, ['jsx->js']);
-    gulp.watch('./node_modules/app/**/*', function(){
+    gulp.watch(['./node_modules/app/**/*','!' + paths.jsx.in], function(){
         server.run([paths.app.in]);
     });
 });
@@ -39,14 +41,6 @@ gulp.task('minify:bundle', ['browserify'], function(){
         .pipe(uglify())
         .pipe(rename({'suffix': '.min'}))
         .pipe(gulp.dest(paths.client.out))
-        .pipe(server.notify());
-});
-
-gulp.task('jsx->js', function () {
-    gulp.src(paths.jsx.in)
-        .pipe(watch(paths.jsx.in))
-        .pipe(react())
-        .pipe(gulp.dest(paths.jsx.out))
         .pipe(server.notify());
 });
 
@@ -69,4 +63,10 @@ gulp.task('browserify', ['jsx->js'], function () {
     return bundle();
 });
 
-gulp.task('default', ['server']);
+gulp.task('jsx->js', function () {
+    gulp.src(paths.jsx.in)
+        .pipe(watch(paths.jsx.in))
+        .pipe(react())
+        .pipe(gulp.dest(paths.jsx.out))
+        .pipe(server.notify());
+});
