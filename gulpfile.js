@@ -2,41 +2,60 @@ var gulp = require('gulp');
 var react = require('gulp-react');
 var browserify = require('browserify');
 var uglify = require('gulp-uglify');
-//var concat = require('gulp-concat');
 var rename = require('gulp-rename');
-var through2 = require('through2');
+var watchify = require('watchify');
+var transform = require('vinyl-transform');
+var watch = require('gulp-watch');
+var server = require('gulp-express');
 
 var paths = {
     'jsx': {
         'in':  './node_modules/app/react/**/*.jsx',
-        'out': './node_modules/app/react/js/'
+        'out': './node_modules/app/react/js'
+    },
+    'client': {
+        'in':  './bin/client',
+        'out': './www/js'
     },
     'app': {
-        'in':  './node_modules/app/client.js',
-        'out': './www/js/'
+        'in': './bin/server'
     }
 };
 
+gulp.task('server', ['browserify'], function () {
+    server.run([paths.app.in]);
+    gulp.watch(paths.jsx.in, ['jsx->js']);
+});
+
 gulp.task('jsx->js', function () {
     gulp.src(paths.jsx.in)
+        .pipe(watch(paths.jsx.in))
         .pipe(react())
-        .pipe(gulp.dest(paths.jsx.out));
+        .pipe(gulp.dest(paths.jsx.out))
+        .pipe(server.notify());
 });
 
 gulp.task('browserify', ['jsx->js'], function () {
-    return gulp.src(['./bin/client'])
-        .pipe(through2.obj(function (file, enc, next){
-            browserify(file)
-                .bundle(function(err, res){
-                    file.contents = res;
-                    next(null, file);
-                });
-        }))
-        .pipe(rename('bundle.js'))
-        .pipe(gulp.dest(paths.app.out))
-        .pipe(uglify())
-        .pipe(rename({'suffix': '.min'}))
-        .pipe(gulp.dest(paths.app.out));
+    var filename = paths.client.in,
+        bundler = watchify(browserify(filename, watchify.args)).on('update', bundle);
+
+    function bundle() {
+        var bundle = transform(function() {
+            console.log('re-bundling...');
+            return bundler.bundle();
+        });
+
+        return gulp.src(paths.client.in)
+            .pipe(bundle)
+            .pipe(rename('bundle.js'))
+            .pipe(gulp.dest(paths.client.out))
+            .pipe(uglify())
+            .pipe(rename({'suffix': '.min'}))
+            .pipe(gulp.dest(paths.client.out))
+            .pipe(server.notify());
+    }
+
+    return bundle();
 });
 
-gulp.task('default', ['browserify']);
+gulp.task('default', ['server']);

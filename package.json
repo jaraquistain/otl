@@ -22,11 +22,15 @@
     "serve-favicon": "~2.2.0"
   },
   "devDependencies": {
+    "browser-sync": "^2.2.2",
     "browserify": "^9.0.3",
     "gulp": "^3.8.11",
+    "gulp-express": "^0.2.1",
     "gulp-react": "^3.0.0",
     "gulp-rename": "^1.2.0",
     "gulp-uglify": "^1.1.0",
-    "through2": "^0.6.3"
+    "gulp-watch": "^4.1.1",
+    "vinyl-transform": "^1.0.0",
+    "watchify": "^2.4.0"
   }
 }
