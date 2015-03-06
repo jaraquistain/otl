@@ -8,8 +8,8 @@ var through2 = require('through2');
 
 var paths = {
     'jsx': {
-        'in':  './app/react/**/*.jsx',
-        'out': './app/react/'
+        'in':  './node_modules/app/react/**/*.jsx',
+        'out': './node_modules/app/react/'
     },
     'app': {
         'in':  './bin/client',
