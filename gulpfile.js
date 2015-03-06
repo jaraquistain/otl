@@ -1,19 +1,19 @@
 var gulp = require('gulp');
 var react = require('gulp-react');
 var browserify = require('browserify');
-//var uglify = require('gulp-uglify');
+var uglify = require('gulp-uglify');
 //var concat = require('gulp-concat');
-//var rename = require('gulp-rename');
+var rename = require('gulp-rename');
 var through2 = require('through2');
 
 var paths = {
     'jsx': {
         'in':  './node_modules/app/react/**/*.jsx',
-        'out': './node_modules/app/react/'
+        'out': './node_modules/app/react/js/'
     },
     'app': {
-        'in':  './bin/client',
-        'out': './www/js/dist/bundle.js'
+        'in':  './node_modules/app/client.js',
+        'out': './www/js/'
     }
 };
 
@@ -32,7 +32,11 @@ gulp.task('browserify', ['jsx->js'], function () {
                     next(null, file);
                 });
         }))
+        .pipe(rename('bundle.js'))
+        .pipe(gulp.dest(paths.app.out))
+        .pipe(uglify())
+        .pipe(rename({'suffix': '.min'}))
         .pipe(gulp.dest(paths.app.out));
 });
 
-gulp.task('default', ['jsx->js']);
+gulp.task('default', ['browserify']);
