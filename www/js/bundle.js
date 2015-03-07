@@ -23,10 +23,9 @@ var Index = React.createClass({displayName: "Index",
     render: function () {
         return (
             React.createElement("div", null, 
-                React.createElement("h1", null, "I just changed something"), 
-                React.createElement("p", null, "View", 
-                    React.createElement("a", {href: "/posts"}, "/posts"), 
-                    "."), 
+                React.createElement("h1", null, "Sup d00dz"), 
+                React.createElement("p", null, "Clicky that thar link to change routes"), 
+                React.createElement("a", {href: this.props.random}, "/", this.props.random), 
                 React.createElement(Renderer, {renderer: this.props.renderer})
             )
         );
@@ -42,8 +41,11 @@ var Other = React.createClass({displayName: "Other",
     render: function () {
         return (
             React.createElement("div", null, 
-                React.createElement("h1", null, "Random: ", this.props.id), 
+                React.createElement("h1", null, "Random Route ID: ", this.props.id), 
+                React.createElement("p", null, "Go ahead and click another. You know you want to."), 
                 React.createElement("a", {href: this.props.random}, "/", this.props.random), 
+                React.createElement("p", null, "Or just go back to the index if you want...I guess"), 
+                React.createElement("a", {href: "/"}, "index"), 
                 React.createElement(Renderer, {renderer: this.props.renderer})
             )
         );
@@ -193,7 +195,10 @@ Router.prototype.setRoute = function (route) {
 module.exports = {
     '/': function (renderAndSend) {
         renderAndSend(null,
-            require('app/react/js/views/index')
+            require('app/react/js/views/index'),
+            {
+                'random': Math.ceil(Math.random() * 10000000)
+            }
         );
     },
     '/:id': function (id, renderAndSend) {
@@ -201,7 +206,7 @@ module.exports = {
             require('app/react/js/views/other'),
             {
                 'id': id,
-                'random': 'b' + Math.ceil(Math.random() * 10000000)
+                'random': Math.ceil(Math.random() * 10000000)
             }
         );
     }

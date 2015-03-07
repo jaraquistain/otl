@@ -12,7 +12,7 @@ var path = require('path');
 var paths = {
     'jsx': {
         'in':  './node_modules/app/react/**/*.jsx',
-        'out': './node_modules/app/react/js'
+        'out': './node_modules/app/react/js/'
     },
     'client': {
         'in':  './bin/client',
@@ -28,7 +28,7 @@ gulp.task('default', ['server']);
 
 gulp.task('server', ['minify'], function () {
     server.run([paths.app.in]);
-    gulp.watch(paths.jsx.in, ['jsx->js']);
+    gulp.watch(paths.jsx.in, ['jsx']);
     gulp.watch(['./node_modules/app/**/*','!' + paths.jsx.in], function(){
         server.run([paths.app.in]);
     });
@@ -44,7 +44,7 @@ gulp.task('minify:bundle', ['browserify'], function(){
         .pipe(server.notify());
 });
 
-gulp.task('browserify', ['jsx->js'], function () {
+gulp.task('browserify', ['jsx'], function () {
     var filename = paths.client.in,
         bundler = watchify(browserify(filename, watchify.args)).on('update', bundle);
 
@@ -63,7 +63,7 @@ gulp.task('browserify', ['jsx->js'], function () {
     return bundle();
 });
 
-gulp.task('jsx->js', function () {
+gulp.task('jsx', function () {
     gulp.src(paths.jsx.in)
         .pipe(watch(paths.jsx.in))
         .pipe(react())
